@@ -16,10 +16,12 @@
     "@types/react-dom": "16.8.4",
     "cross-env": "^5.2.0",
     "electron-is-dev": "^1.1.0",
+    "knex": "^0.19.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
-    "typescript": "3.5.3"
+    "sqlite3": "^4.0.9",
+    "typescript": "3.4.5"
   },
   "scripts": {
     "react-start": "react-scripts start",
@@ -50,6 +52,7 @@
     "concurrently": "^4.1.1",
     "electron": "^5.0.7",
     "electron-builder": "^21.1.1",
+    "electron-rebuild": "^1.8.5",
     "wait-on": "^3.3.0"
   }
 }
