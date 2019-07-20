@@ -45,7 +45,9 @@ function createWindow() {
 
   win.on('closed', () => (win = null))
 
-  win.webContents.openDevTools()
+  if (isDev) {
+    win.webContents.openDevTools()
+  }
 
   async function train() {
     await classifierUtils.trainClassifier(bayes)
