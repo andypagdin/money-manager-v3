@@ -2,11 +2,12 @@
   "description": "<your project description>",
   "author": "<author of app>",
   "build": {
-    "appId": "<com.your_app>"
+    "appId": "<com.your_app>",
+    "extraResources": ["src/database/**/*"]
   },
   "main": "public/electron.js",
   "homepage": ".",
-  "name": "money-manager-v3",
+  "name": "money-manager",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
