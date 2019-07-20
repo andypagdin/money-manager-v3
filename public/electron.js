@@ -4,10 +4,28 @@ const isDev = require('electron-is-dev')
 const knex = require('./knex')
 const moment = require('moment')
 const bayes = require('bayes')
-const classifierUtils = require('../src/classifier/classifierUtils')
 const fs = require('fs')
 
+const classifierUtilsPath = isDev
+  ? '../src/classifier/classifierUtils'
+  : path.join(__dirname, '../src/classifier/classifierUtils').replace('/app.asar', '')
+const classifierUtils = require(classifierUtilsPath)
+
 let win
+const migrationsPath = isDev 
+  ? path.join(__dirname, '../src/database/migrations') 
+  : path.join(__dirname, '../src/database/migrations').replace('/app.asar', '')
+
+const database = require('knex')({
+  client: 'sqlite3',
+  useNullAsDefault: true,
+  connection: {
+    filename: path.join(app.getPath('appData'), 'money-manager/database.sqlite')
+  },
+  migrations: {
+    directory: migrationsPath
+  }
+})
 
 function createWindow() {
   win = new BrowserWindow({ 
@@ -30,11 +48,11 @@ function createWindow() {
   win.webContents.openDevTools()
 
   async function train() {
-    await classifierUtils.trainClassifier()
+    await classifierUtils.trainClassifier(bayes)
   }
   
   async function make() {
-    await classifierUtils.makeInitialClassifier()
+    await classifierUtils.makeInitialClassifier(bayes)
   }
   
   if (process.env.TRAIN_CLASSIFIER) {
@@ -54,7 +72,7 @@ function createWindow() {
       .catch(err => console.log(err))
   }
   else {
-    knex.setup(app.getPath('appData'))
+    knex.setup(database, app.getPath('appData'))
   }
 }
 
@@ -73,7 +91,7 @@ app.on('activate', () => {
 })
 
 ipcMain.on('update-category', (event, transactionId, categoryId) => {
-  knex.database('transaction')
+  database('transaction')
     .where('id', '=', transactionId)
     .update({ categoryId: categoryId })
     .then(() => {
@@ -86,7 +104,8 @@ ipcMain.on('update-category', (event, transactionId, categoryId) => {
 })
 
 ipcMain.on('insert-query', (event, table, data) => {
-  knex.database(table).insert(data)
+  database(table)
+    .insert(data)
     .then(() => {
       event.returnValue = true
     })
@@ -101,10 +120,7 @@ ipcMain.on('get-transactions', (event, month) => {
   const minDate = currentMonth.startOf('month').format('YYYY-MM-DD')
   const maxDate = currentMonth.endOf('month').format('YYYY-MM-DD')
 
-  console.log(knex.database)
-
-  knex.database('transaction AS t')
-    .select(
+  database.select(
       't.id',
       't.Value', 
       't.Date', 
@@ -114,6 +130,7 @@ ipcMain.on('get-transactions', (event, month) => {
       't.AccountName', 
       't.AccountNumber', 
       'category.Name AS categoryName')
+    .from('transaction as t')
     .join('category', 't.categoryId', '=', 'category.id')
     .whereBetween('t.Date', [minDate, maxDate])
     .then((results) => {
@@ -126,7 +143,8 @@ ipcMain.on('get-transactions', (event, month) => {
 })
 
 ipcMain.on('get-settings', (event) => {
-  knex.database('setting')
+  database.select('*')
+    .from('setting')
     .then((results) => {
       event.returnValue = results
     })
@@ -137,7 +155,8 @@ ipcMain.on('get-settings', (event) => {
 })
 
 ipcMain.on('get-categories', (event) => {
-  knex.database('category')
+  database.select('*')
+    .from('category')
     .then((results) => {
       event.returnValue = results
     })
@@ -148,7 +167,7 @@ ipcMain.on('get-categories', (event) => {
 })
 
 ipcMain.on('update-setting', (event, setting) => {
-  knex.database('setting')
+  database('setting')
     .where('name', '=', setting.name)
     .update('value', setting.value)
     .then((updatedRows) => {
@@ -161,7 +180,8 @@ ipcMain.on('update-setting', (event, setting) => {
 })
 
 ipcMain.on('get-bills-settings', (event) => {
-  knex.database('setting')
+  database.select('*')
+    .from('setting')
     .where('name', '=', 'waterSupplier')
     .orWhere('name', '=', 'energySupplier')
     .then((results) => {
@@ -174,7 +194,8 @@ ipcMain.on('get-bills-settings', (event) => {
 })
 
 ipcMain.on('classify-transactions', (event, transactions) => {  
-  knex.database('category')
+  database.select('*')
+    .from('category')
     .then((categories) => {
       classify(categories)
     })
@@ -183,7 +204,9 @@ ipcMain.on('classify-transactions', (event, transactions) => {
     })
 
   function classify(categories) {
-    const json = fs.readFileSync(path.resolve(__dirname + '/classifier/classifier.json'), 'utf8')
+    const json = isDev
+      ? fs.readFileSync(path.join(__dirname, '../src/classifier/classifier.json'), 'utf8')
+      : fs.readFileSync(path.join(__dirname, '../src/classifier/classifier.json').replace('/app.asar', ''), 'utf8')
     let classifier = bayes.fromJson(json)
   
     for (let i = 0; i < transactions.length; i++) {

@@ -1,5 +1,4 @@
 // @ts-ignore
-const bayes = require('bayes')
 const fs = require('fs')
 const path = require('path')
 
@@ -7,7 +6,7 @@ const path = require('path')
  * Used in development to create an empty classifier
  * the resulting classifier should be kept in version control and updated as it learns
  */
-function makeInitialClassifier() {
+function makeInitialClassifier(bayes) {
   return new Promise((resolve, reject) => {
     let classifier = bayes()
 
@@ -28,7 +27,7 @@ function makeInitialClassifier() {
   })
 }
 
-function trainClassifier() {
+function trainClassifier(bayes) {
   return new Promise((resolve, reject) => {
     const data = JSON.parse(fs.readFileSync(path.resolve(__dirname + '/trainingData.json'), 'utf8'))
     const classifierJson = fs.readFileSync(path.resolve(__dirname + '/classifier.json'), 'utf8')
