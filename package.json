@@ -3,7 +3,9 @@
   "author": "<author of app>",
   "build": {
     "appId": "<com.your_app>",
-    "extraResources": ["src/database/**/*"]
+    "extraResources": [
+      "src/database/**/*"
+    ]
   },
   "main": "public/electron.js",
   "homepage": ".",
@@ -11,18 +13,30 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.19",
+    "@fortawesome/free-solid-svg-icons": "^5.9.0",
+    "@fortawesome/react-fontawesome": "^0.1.4",
     "@types/jest": "24.0.15",
     "@types/node": "12.6.8",
     "@types/react": "16.8.23",
     "@types/react-dom": "16.8.4",
+    "bayes": "^0.0.7",
+    "chart.js": "^2.8.0",
     "cross-env": "^5.2.0",
     "electron-is-dev": "^1.1.0",
     "knex": "^0.19.0",
+    "moment": "^2.24.0",
+    "papaparse": "^5.0.0",
+    "prop-types": "^15.7.2",
     "react": "^16.8.6",
+    "react-chartjs-2": "^2.7.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
+    "react-table": "^6.10.0",
+    "react-toastify": "^5.3.2",
     "sqlite3": "^4.0.9",
-    "typescript": "3.4.5"
+    "typescript": "3.4.5",
+    "uikit": "^3.1.6"
   },
   "scripts": {
     "react-start": "react-scripts start",
@@ -32,7 +46,8 @@
     "electron-build": "electron-builder",
     "release": "yarn react-build && electron-builder --publish=always",
     "build": "yarn react-build && yarn electron-build",
-    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\""
+    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\"",
+    "rebuild:sqlite": "./node_modules/.bin/electron-rebuild -w sqlite3 -p"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -54,6 +69,7 @@
     "electron": "^5.0.7",
     "electron-builder": "^21.1.1",
     "electron-rebuild": "^1.8.5",
+    "react-router-dom": "^5.0.1",
     "wait-on": "^3.3.0"
   }
 }

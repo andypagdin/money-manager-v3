@@ -1,33 +1,38 @@
 // @ts-ignore
-const electron = require('electron')
-const app = electron.app
 const path = require('path')
 const fs = require('fs')
 const isDev = require('electron-is-dev')
 
-let connectionPath = path.join(app.getPath('appData'), 'money-manager/database.sqlite')
-let migrationsPath = path.join(__dirname, '../src/database/migrations')
-let seedsPath = './src/database/seeds'
-
-if (!isDev) {
-  migrationsPath = path.join(__dirname, '../src/database/migrations').replace('/app.asar', '')
-  seedsPath = path.join(__dirname, '../src/database/seeds').replace('/app.asar', '')
-}
-
-knex = require('knex')({
-  client: 'sqlite3',
-  useNullAsDefault: true,
-  connection: {
-    filename: connectionPath
-  },
-  migrations: {
-    directory: migrationsPath
-  }
-})
+let knex
+let seedsPath
+let migrationsPath
+let connectionPath
 
 module.exports = {
   database: knex,
-  setup: () => {
+  setup: (appData) => {
+    async function initPaths() {
+      connectionPath = path.join(appData, 'money-manager/database.sqlite')
+      migrationsPath = path.join(__dirname, '../src/database/migrations')
+      seedsPath = './src/database/seeds'
+      
+      if (!isDev) {
+        migrationsPath = path.join(__dirname, '../src/database/migrations').replace('/app.asar', '')
+        seedsPath = path.join(__dirname, '../src/database/seeds').replace('/app.asar', '')
+      }
+      
+      knex = require('knex')({
+        client: 'sqlite3',
+        useNullAsDefault: true,
+        connection: {
+          filename: connectionPath
+        },
+        migrations: {
+          directory: migrationsPath
+        }
+      })
+    }
+
     async function checkFiles() {
       try {
         fs.openSync(connectionPath, 'a')
@@ -61,6 +66,7 @@ module.exports = {
     }
   
     async function init() {
+      await initPaths()
       await checkFiles()
       await checkConnection()
       await runMigrations()

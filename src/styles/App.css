@@ -1,3 +1,125 @@
-.App {
+#main-container {
+  background-color: #f9f9fc;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.wrapper {
+  padding: 0 15px 25px 15px;
+}
+
+.Toastify__toast-body {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.uk-button {
+  padding: 0 20px !important;
+}
+
+.margin-right-5 {
+  margin-right: 5px;
+}
+
+*+.uk-grid-margin, .uk-grid+.uk-grid, .uk-grid>.uk-grid-margin {
+    margin-top: 20px !important;
+}
+
+::-webkit-scrollbar {
+  width:9px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-border-radius:5px;
+  border-radius:5px;
+  background:rgba(0,0,0,0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius:5px;
+  border-radius:5px;
+  background:rgba(0,0,0,0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background:rgba(0,0,0,0.4);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background:rgba(0,0,0,0.05);
+}
+
+.ReactTable .rt-thead.-header {
+  padding-right: 9px !important;
+}
+
+.ReactTable .rt-tbody {
+  overflow: hidden;
+}
+
+.uk-card-title {
+  font-size: 20px !important;
+  line-height: 0.5 !important;
+}
+
+.category-label {
+  padding: 10px;
+  border-radius: 5px;
   text-align: center;
+  color: #fff;
+}
+
+.category-label:hover {
+  cursor: pointer;
+}
+
+.category-groceries {
+  background-color: #3EDC81;
+}
+
+.category-bills {
+  background-color: #37DBD0;
+}
+
+.category-entertainment {
+  background-color: #22A7F0;
+}
+
+.category-eatingout {
+  background-color: #AB69C6;
+}
+
+.category-transport {
+  background-color: #FF6CA8;
+}
+
+.category-shopping {
+  background-color: #FF7C6C;
+}
+
+.category-other {
+  background-color: #F9B32F;
+}
+
+.category-income {
+  background-color: #CDDC39;
+}
+
+.category-savings {
+  background-color: #F06B22;
+}
+
+#edit-category-modal button {
+  margin-right: 5px;
+}
+
+.edit-category-button {
+  margin: 10px;
+}
+
+.positive {
+  color: #3EDC81;
+}
+
+.negative {
+  color: #FF7C6C;
 }

@@ -1,0 +1,11 @@
+.uk-navbar-nav > li > a {
+  text-transform: initial !important;
+}
+
+.uk-navbar-container:not(.uk-navbar-transparent) {
+  background: none !important;
+}
+
+.active {
+  color: black !important;
+}

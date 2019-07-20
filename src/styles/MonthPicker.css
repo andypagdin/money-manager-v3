@@ -1,0 +1,8 @@
+#month-picker {
+  float: right;
+  font-size: 15px;
+}
+
+#increment-month:hover, #decrement-month:hover {
+  cursor: pointer;
+}
