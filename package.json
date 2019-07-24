@@ -22,7 +22,10 @@
     "release": "yarn react-build && electron-builder --publish=always",
     "build": "yarn react-build && yarn electron-build",
     "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\"",
-    "rebuild:sqlite": "./node_modules/.bin/electron-rebuild -w sqlite3 -p"
+    "rebuild:sqlite": "./node_modules/.bin/electron-rebuild -w sqlite3 -p",
+    "train": "TRAIN_CLASSIFIER=true yarn start",
+    "make": "MAKE_CLASSIFIER=true yarn start",
+    "make:train": "MAKE_TRAIN_CLASSIFIER=true yarn start"
   },
   "eslintConfig": {
     "extends": "react-app"
