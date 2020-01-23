@@ -9,3 +9,7 @@
 .active {
   color: black !important;
 }
+
+.uk-navbar {
+  height: 30px !important;
+}
