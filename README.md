@@ -3,6 +3,8 @@ Third version of a simple money management offline web app. Gain simple insights
 
 money manager was created as a learning project focused on using React, Electron and SQLite to create a cross platform offline application.
 
+![Home](docs/screenshot-1.png)
+
 ## Build it
 `yarn build`
 
