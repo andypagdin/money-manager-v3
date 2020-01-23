@@ -1,7 +1,9 @@
 # Money Manager 💵
-Third version of a simple money management offline web app. Gain simple insights into your spending.
+Gain simple insights into your spending.
 
-money manager was created as a learning project focused on using React, Electron and SQLite to create a cross platform offline application.
+Money manager was created as a learning project focused on using React, Electron and SQLite to create a cross platform offline application.
+
+The application uses a naive bayes trained classifier to calculate and automatically assign a category to individual transactions.
 
 ![Home](docs/screenshot-1.png)
 
